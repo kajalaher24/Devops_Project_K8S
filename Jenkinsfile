@@ -5,16 +5,6 @@ pipeline {
         githubPush()
     }
 
-    stages {
-
-        stage('Clone Code') {
-            steps {
-                echo "Cloning repository..."
-                git branch: 'main',
-                    credentialsId: 'github-creds',
-                    url: 'https://github.com/kajalaher24/Devops_Project_K8S.git'
-            }
-        }
 
         stage('Build Docker Image') {
             steps {
