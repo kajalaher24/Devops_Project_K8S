@@ -8,6 +8,7 @@ def home():
     app_env = os.getenv("APP_ENV", "development")
     app_version = os.getenv("APP_VERSION", "v1")
     return f"Welcome to DevOps Project with Kubernetes!<br>Environment: {app_env}<br>Version: {app_version}"
+    return f"Welcome to CICD Pipelines"
 
 @app.route('/about')
 def about():
