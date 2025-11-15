@@ -15,7 +15,7 @@ pipeline {
             steps {
                 echo "Cloning repository..."
                 git branch: 'main',
-                    credentialsId: 'github-cred',
+                    credentialsId: 'github-creds',
                     url: 'https://github.com/kajalaher24/Devops_Project_K8S.git'
             }
         }
