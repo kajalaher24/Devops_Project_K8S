@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKERHUB = credentials('dockerhub-cred')
+        DOCKERHUB = credentials('docker-creds')
     }
 
     stages {
@@ -48,8 +48,8 @@ pipeline {
                 kubectl apply -f k8s/namespace.yaml
                 kubectl apply -f k8s/Deployment.yaml
                 kubectl apply -f k8s/Service.yaml
-				kubectl apply -f k8s/ConfigMap.yaml
-				kubectl apply -f k8s/Secret.yaml
+		kubectl apply -f k8s/ConfigMap.yaml
+		kubectl apply -f k8s/Secret.yaml
                 """
             }
         }
