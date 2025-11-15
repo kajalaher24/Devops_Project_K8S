@@ -5,6 +5,10 @@ pipeline {
         githubPush()
     }
 
+    environment {
+        DOCKERHUB = credentials('dockerhub-creds')
+    }
+
     stages {
 
         stage('Clone Code') {
@@ -19,27 +23,21 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo "Building Docker Image..."
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh "docker build -t ${USERNAME}/flask-k8s-app:latest ./app"
-                }
+                sh "docker build -t ${DOCKERHUB_USR}/flask-k8s-app:latest ./app"
             }
         }
 
         stage('Login to DockerHub') {
             steps {
                 echo "Logging in to DockerHub..."
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh "echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin"
-                }
+                sh "echo ${DOCKERHUB_PSW} | docker login -u ${DOCKERHUB_USR} --password-stdin"
             }
         }
 
         stage('Push Image to DockerHub') {
             steps {
                 echo 'Pushing Docker Image...'
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh "docker push ${USERNAME}/flask-k8s-app:latest"
-                }
+                sh "docker push ${DOCKERHUB_USR}/flask-k8s-app:latest"
             }
         }
 
@@ -50,8 +48,8 @@ pipeline {
                 kubectl apply -f k8s/namespace.yaml
                 kubectl apply -f k8s/Deployment.yaml
                 kubectl apply -f k8s/Service.yaml
-                kubectl apply -f k8s/ConfigMap.yaml
-                kubectl apply -f k8s/Secret.yaml
+		kubectl apply -f k8s/ConfigMap.yaml
+		kubectl apply -f k8s/Secret.yaml
                 """
             }
         }
