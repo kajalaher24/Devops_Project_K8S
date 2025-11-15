@@ -19,7 +19,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo "Building Docker Image..."
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh "docker build -t ${USERNAME}/flask-k8s-app:latest ./app"
                 }
             }
@@ -28,7 +28,7 @@ pipeline {
         stage('Login to DockerHub') {
             steps {
                 echo "Logging in to DockerHub..."
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh "echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin"
                 }
             }
@@ -37,7 +37,7 @@ pipeline {
         stage('Push Image to DockerHub') {
             steps {
                 echo 'Pushing Docker Image...'
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh "docker push ${USERNAME}/flask-k8s-app:latest"
                 }
             }
