@@ -47,4 +47,8 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+jenkins-data/
+app/~
+*.bak
+*.swp
 
